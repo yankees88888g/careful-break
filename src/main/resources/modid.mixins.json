@@ -3,7 +3,7 @@
 	"package": "com.yankees88888g.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"BlockBreakMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
