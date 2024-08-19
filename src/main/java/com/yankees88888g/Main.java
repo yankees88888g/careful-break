@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Properties;
 
+import static com.yankees88888g.FileLoader.getPath;
 import static net.minecraft.server.command.CommandManager.*;
 
 public class Main implements ModInitializer {
@@ -36,17 +37,12 @@ public class Main implements ModInitializer {
                                 boolean result = BoolArgumentType.getBool(context, "value");
                                 ServerCommandSource source = context.getSource();
                                 ServerWorld world = source.getWorld();
-                                try {
-                                    Path worldSavePath = source.getWorld().getServer().getRunDirectory().toRealPath().resolve("saves").resolve(world.getServer().getSaveProperties().getLevelName());
-                                    if (result) {
-                                        source.sendFeedback(() -> Text.literal("Careful Break is set to True."), true);
-                                        FileLoader.updateFile(true, worldSavePath);
-                                    } else {
-                                        source.sendFeedback(() -> Text.literal("Careful Break is set to False."), true);
-                                        FileLoader.updateFile(false, worldSavePath);
-                                    }
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
+                                if (result) {
+                                    source.sendFeedback(() -> Text.literal("Careful Break is set to True."), true);
+                                    FileLoader.updateFile(true, getPath(world));
+                                } else {
+                                    source.sendFeedback(() -> Text.literal("Careful Break is set to False."), true);
+                                    FileLoader.updateFile(false, getPath(world));
                                 }
                                 return 1;
                             })
