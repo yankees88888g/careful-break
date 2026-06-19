@@ -1,7 +1,8 @@
 package com.yankees88888g;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.storage.LevelResource;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -32,18 +33,14 @@ public class FileLoader {
             throw new RuntimeException(e);
         }
     }
-    public static String getPath(ServerWorld world) {
+    public static String getPath(ServerLevel world) {
         Path worldSavePath;
         MinecraftServer server = world.getServer();
-        try {
-            if (server != null) {
-                return "config/carefulBreak.config";
-            } else {
-                worldSavePath = world.getServer().getRunDirectory().toRealPath().resolve("saves").resolve(world.getServer().getSaveProperties().getLevelName());
-                return worldSavePath + "/carefulBreak.config";
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (server != null) {
+            return "config/carefulBreak.config";
+        } else {
+            worldSavePath = server.getWorldPath(LevelResource.ROOT).resolve("carefulBreak.config");
+        return worldSavePath.toString();
         }
     }
 }
